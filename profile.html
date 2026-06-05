@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile | Premium Funding Trade</title>
+  <meta name="theme-color" content="#08130b" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Outfit", "Montserrat", "system-ui", "sans-serif"] },
+          colors: {
+            pftBg: "#07120a",
+            pftPanel: "#102115",
+            pftPanel2: "#16291a",
+            pftGreen: "#58c958",
+            pftLime: "#dfff72",
+            pftText: "#f0ebe5",
+            pftMuted: "#c8d3c5"
+          },
+          boxShadow: {
+            pft: "0 24px 70px rgba(0,0,0,.34)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Outfit,Montserrat,system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 12% 18%,rgba(76,175,80,.18),transparent 22%),
+        radial-gradient(circle at 86% 30%,rgba(129,199,132,.14),transparent 20%),
+        linear-gradient(180deg,#102115,#06100a);
+      color:#f0ebe5;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+      background-size:78px 78px;
+      opacity:.13;
+      z-index:-2;
+    }
+    body:after{
+      content:"";
+      position:fixed;
+      inset:-10%;
+      pointer-events:none;
+      background:linear-gradient(120deg,transparent 0 20%,rgba(255,255,255,.035) 20% 23%,transparent 23% 58%,rgba(255,255,255,.025) 58% 61%,transparent 61%);
+      z-index:-3;
+    }
+    .glass{
+      background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));
+      border:1px solid rgba(170,210,170,.16);
+      box-shadow:0 24px 70px rgba(0,0,0,.34);
+      backdrop-filter:blur(18px);
+    }
+    .tab-active{
+      color:#f0ebe5!important;
+      border-color:#dfff72!important;
+      background:rgba(223,255,114,.07)!important;
+    }
+    .field{
+      width:100%;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.055);
+      color:#f0ebe5;
+      outline:none;
+      padding:15px 16px;
+      font-weight:700;
+      transition:.2s ease;
+    }
+    .field::placeholder{color:rgba(240,235,229,.45)}
+    .field:focus{
+      border-color:rgba(105,216,108,.55);
+      box-shadow:0 0 0 4px rgba(76,175,80,.13);
+      transform:translateY(-1px);
+    }
+    .field:disabled{
+      opacity:.62;
+      cursor:not-allowed;
+      background:rgba(255,255,255,.025);
+    }
+    .label{
+      display:block;
+      margin-bottom:9px;
+      color:#f0ebe5;
+      font-size:13px;
+      font-weight:900;
+    }
+    .req{color:#ff7666}
+    .btn{
+      border:1px solid transparent;
+      border-radius:999px;
+      padding:13px 18px;
+      font:inherit;
+      font-weight:900;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{
+      background:linear-gradient(180deg,#69d86c,#43aa47);
+      color:#071309;
+      box-shadow:0 18px 36px rgba(76,175,80,.24);
+    }
+    .btn-ghost{
+      background:rgba(255,255,255,.045);
+      border-color:rgba(255,255,255,.12);
+      color:#f0ebe5;
+    }
+    .status-box{display:none}
+    .status-box.show{display:block}
+    .avatar-ring{
+      box-shadow:0 0 0 4px rgba(255,255,255,.08),0 0 0 7px rgba(105,216,108,.22),0 20px 45px rgba(0,0,0,.36);
+    }
+    .avatar-action{
+      position:absolute;
+      right:-7px;
+      bottom:-7px;
+      width:34px;
+      height:34px;
+      border-radius:999px;
+      border:1px solid rgba(223,255,114,.38);
+      background:linear-gradient(180deg,#dfff72,#9bdc43);
+      color:#071309;
+      display:grid;
+      place-items:center;
+      font-size:15px;
+      font-weight:900;
+      box-shadow:0 14px 28px rgba(0,0,0,.35);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .avatar-action:hover{transform:translateY(-2px) scale(1.04)}
+    .warning-card{
+      border:1px solid rgba(250,204,21,.24);
+      background:linear-gradient(180deg,rgba(250,204,21,.12),rgba(250,204,21,.055));
+      color:#fff6c2;
+      border-radius:22px;
+      padding:14px 16px;
+      font-weight:800;
+      line-height:1.65;
+    }
+    .kyc-drop.drag{
+      border-color:rgba(223,255,114,.75)!important;
+      background:rgba(223,255,114,.07)!important;
+    }
+    .kyc-live{
+      min-height:100%;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.045);
+    }
+    .live-preview{
+      width:100%;
+      max-height:260px;
+      border-radius:22px;
+      object-fit:cover;
+      background:#08130b;
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .custom-select{position:relative}
+    .custom-select-btn{
+      width:100%;
+      min-height:54px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.055);
+      color:#f0ebe5;
+      outline:none;
+      padding:15px 46px 15px 16px;
+      font-weight:800;
+      text-align:left;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+    .custom-select-btn:after{
+      content:"";
+      position:absolute;
+      right:18px;
+      top:50%;
+      width:9px;
+      height:9px;
+      border-right:2px solid rgba(240,235,229,.75);
+      border-bottom:2px solid rgba(240,235,229,.75);
+      transform:translateY(-70%) rotate(45deg);
+      pointer-events:none;
+    }
+    .custom-select.open .custom-select-btn{
+      border-color:rgba(105,216,108,.65);
+      box-shadow:0 0 0 4px rgba(76,175,80,.13);
+    }
+    .custom-select-panel{
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(100% + 10px);
+      z-index:80;
+      max-height:260px;
+      overflow:auto;
+      border-radius:18px;
+      border:1px solid rgba(105,216,108,.22);
+      background:#0b170e;
+      box-shadow:0 24px 70px rgba(0,0,0,.48);
+      padding:8px;
+      display:none;
+    }
+    .custom-select.open .custom-select-panel{display:block}
+    .custom-option{
+      width:100%;
+      border:0;
+      border-radius:13px;
+      background:transparent;
+      color:#dfeade;
+      padding:12px 12px;
+      text-align:left;
+      font:inherit;
+      font-weight:800;
+      cursor:pointer;
+      transition:.16s ease;
+    }
+    .custom-option:hover,.custom-option.active{
+      background:rgba(105,216,108,.16);
+      color:#f0ebe5;
+    }
+    .custom-select.disabled{opacity:.62;pointer-events:none}
+    .custom-select.disabled .custom-select-btn{cursor:not-allowed;background:rgba(255,255,255,.025)}
+
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus{
+      -webkit-text-fill-color:#f0ebe5!important;
+      -webkit-box-shadow:0 0 0 1000px rgba(255,255,255,.055) inset!important;
+      box-shadow:0 0 0 1000px rgba(255,255,255,.055) inset!important;
+      transition:background-color 9999s ease-in-out 0s;
+    }
+    input.field:focus, .field:focus{
+      background:rgba(255,255,255,.07)!important;
+      color:#f0ebe5!important;
+    }
+    .custom-select-panel::-webkit-scrollbar{width:10px}
+    .custom-select-panel::-webkit-scrollbar-track{background:#08130b;border-radius:99px}
+    .custom-select-panel::-webkit-scrollbar-thumb{background:rgba(105,216,108,.45);border-radius:99px}
+
+    @media(max-width:760px){
+      .desktop-only{display:none!important}
+      .profile-shell{padding:16px!important}
+      .profile-title{font-size:38px!important}
+      .tabs{gap:8px!important}
+      .tabs button{padding:12px 12px!important;font-size:12px!important}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="profile-shell mx-auto w-full max-w-6xl px-5 py-7 sm:px-7 lg:px-8">
+
+    <!-- Professional top bar -->
+    <header class="mb-7 flex flex-col gap-4 rounded-[28px] border border-white/10 bg-black/15 p-4 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+      <a href="index.html" class="flex min-w-0 items-center gap-3 text-white no-underline">
+        <img src="pft-header-logo.png" alt="Premium Funding Trade" class="h-12 w-12 rounded-2xl object-cover shadow-lg" />
+        <div class="min-w-0">
+          <p class="text-[11px] font-black uppercase tracking-[.28em] text-pftLime">Premium Funding Trade</p>
+          <p class="truncate text-sm font-extrabold text-pftMuted">Trader Profile Center</p>
+        </div>
+      </a>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="index.html" class="btn btn-ghost text-sm">Back to Website</a>
+        <button id="logoutBtn" type="button" class="btn btn-primary hidden text-sm">Log Out</button>
+      </div>
+    </header>
+
+    <!-- Title -->
+    <section class="mb-7">
+      <span class="inline-flex rounded-full border border-green-400/20 bg-green-400/10 px-4 py-2 text-xs font-black uppercase tracking-[.18em] text-[#9ff0a2]">
+        Account Dashboard
+      </span>
+      <h1 class="profile-title mt-4 text-5xl font-black leading-[.95] tracking-[-.05em] text-pftText sm:text-6xl">My Profile</h1>
+      <p id="profileSubtitle" class="mt-4 max-w-2xl text-base font-medium leading-8 text-pftMuted">
+        Manage your Premium Funding Trade account, security, and verification status.
+      </p>
+    </section>
+
+    <!-- Status -->
+    <div id="globalStatus" class="status-box mb-5 rounded-2xl border px-4 py-3 text-sm font-bold"></div>
+
+    <!-- Main card -->
+    <section class="glass rounded-[32px]">
+      <!-- Profile hero strip -->
+      <div class="border-b border-white/10 p-5 sm:p-7">
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-5">
+            <div class="relative">
+              <img id="avatarImg" src="" alt="Profile avatar" class="avatar-ring hidden h-20 w-20 rounded-full object-cover" />
+              <div id="avatarFallback" class="avatar-ring grid h-20 w-20 place-items-center rounded-full bg-[#0b170e] text-2xl font-black text-pftLime">P</div>
+              <input id="avatarFile" class="hidden" type="file" accept="image/jpeg,image/png,image/webp" />
+              <button id="avatarChangeBtn" type="button" class="avatar-action" title="Change profile photo" aria-label="Change profile photo">✎</button>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 id="profileName" class="text-2xl font-black tracking-[-.02em] text-pftText">Loading...</h2>
+                <span class="rounded-full bg-green-400/15 px-3 py-1 text-xs font-black text-[#9ff0a2]">Verified Account</span>
+              </div>
+              <p id="profileEmailText" class="mt-1 text-sm font-bold text-pftMuted">Checking session...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs flex gap-2 overflow-x-auto border-b border-white/10 p-3 text-sm font-black text-pftMuted">
+        <button data-profile-tab="account" class="tab-active rounded-2xl border-b-2 border-transparent px-5 py-3 transition">Account Information</button>
+        <button data-profile-tab="password" class="rounded-2xl border-b-2 border-transparent px-5 py-3 transition hover:bg-white/5">Change Password</button>
+        <button data-profile-tab="kyc" class="rounded-2xl border-b-2 border-transparent px-5 py-3 transition hover:bg-white/5">KYC Verification</button>
+      </div>
+
+      <!-- Account tab -->
+      <section id="profile-section-account" data-profile-section class="p-5 sm:p-7">
+        <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h3 class="text-2xl font-black text-pftText">Account Information</h3>
+            <p class="mt-2 text-sm font-semibold leading-7 text-pftMuted">
+              Your signup information is synced automatically. First name and last name can only be saved once.
+            </p>
+          </div>
+          <span id="lockHint" class="rounded-full border border-yellow-300/20 bg-yellow-300/10 px-4 py-2 text-xs font-black text-yellow-200">
+            Name edit-once protection
+          </span>
+        </div>
+
+        <div id="nameOnceWarning" class="warning-card mb-5">
+          ⚠️ Important: your first name and last name are editable only one time. After saving them, they will be locked permanently for this account. Check spelling carefully before pressing Save Changes.
+        </div>
+
+        <form id="accountForm" class="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div>
+            <label class="label" for="firstName">First Name <span class="req">*</span></label>
+            <input id="firstName" class="field lock-once" type="text" placeholder="First name" />
+          </div>
+
+          <div>
+            <label class="label" for="lastName">Last Name <span class="req">*</span></label>
+            <input id="lastName" class="field lock-once" type="text" placeholder="Last name" />
+          </div>
+
+          <div>
+            <label class="label" for="profileEmail">Email <span class="req">*</span></label>
+            <input id="profileEmail" class="field" type="email" disabled readonly placeholder="Registered email" />
+          </div>
+
+          <div>
+            <label class="label" for="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" class="field" type="tel" placeholder="+964 770 000 0000" />
+          </div>
+
+          <div>
+            <label class="label" for="gender">Gender <span class="req">*</span></label>
+            <input id="gender" class="lock-once" type="hidden" />
+            <div class="custom-select" data-custom-select="gender">
+              <button id="genderBtn" class="custom-select-btn" type="button">Select gender</button>
+              <div id="genderPanel" class="custom-select-panel"></div>
+            </div>
+          </div>
+
+          <div>
+            <label class="label" for="country">Country <span class="req">*</span></label>
+            <input id="country" class="lock-once" type="hidden" />
+            <div class="custom-select" data-custom-select="country">
+              <button id="countryBtn" class="custom-select-btn" type="button">Select country</button>
+              <div id="countryPanel" class="custom-select-panel"></div>
+            </div>
+          </div>
+
+          <div class="flex justify-end md:col-span-2">
+            <button id="saveAccountBtn" type="submit" class="btn btn-primary min-w-[170px]">Save Changes</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Password tab -->
+      <section id="profile-section-password" data-profile-section class="hidden p-5 sm:p-7">
+        <div class="mb-7">
+          <h3 class="text-2xl font-black text-pftText">Change Password</h3>
+          <p class="mt-2 max-w-2xl text-sm font-semibold leading-7 text-pftMuted">
+            Enter your current password first. Firebase will re-authenticate your account before updating the password.
+          </p>
+        </div>
+
+        <form id="passwordForm" class="grid max-w-2xl gap-5">
+          <div>
+            <label class="label" for="currentPassword">Current Password <span class="req">*</span></label>
+            <div class="relative">
+              <input id="currentPassword" class="field pr-14" type="password" placeholder="Current password" />
+              <button type="button" data-eye="currentPassword" class="eye-btn absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-3 py-2 text-sm font-black text-pftMuted hover:bg-white/10">Show</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="label" for="newPassword">New Password <span class="req">*</span></label>
+            <div class="relative">
+              <input id="newPassword" class="field pr-14" type="password" placeholder="New password" />
+              <button type="button" data-eye="newPassword" class="eye-btn absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-3 py-2 text-sm font-black text-pftMuted hover:bg-white/10">Show</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="label" for="confirmPassword">Re-enter New Password <span class="req">*</span></label>
+            <div class="relative">
+              <input id="confirmPassword" class="field pr-14" type="password" placeholder="Re-enter new password" />
+              <button type="button" data-eye="confirmPassword" class="eye-btn absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-3 py-2 text-sm font-black text-pftMuted hover:bg-white/10">Show</button>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button id="changePasswordBtn" type="submit" class="btn btn-primary min-w-[180px]">Update Password</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- KYC tab -->
+      <section id="profile-section-kyc" data-profile-section class="hidden p-5 sm:p-7">
+        <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h3 class="text-2xl font-black text-pftText">KYC Verification</h3>
+            <p class="mt-2 max-w-2xl text-sm font-semibold leading-7 text-pftMuted">
+              Upload a clear document image and take a live selfie. This version stores the document and live photo as Base64 text in Firestore, without Firebase Storage.
+            </p>
+          </div>
+          <span id="kycStatus" class="rounded-full bg-gray-500/15 px-4 py-2 text-xs font-black text-gray-200">Not Submitted</span>
+        </div>
+
+        <form id="kycForm" class="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div>
+            <label class="label" for="kycDocType">Document Type <span class="req">*</span></label>
+            <input id="kycDocType" class="kyc-field" type="hidden" />
+            <div class="custom-select kyc-field" data-custom-select="kycDocType">
+              <button id="kycDocTypeBtn" class="custom-select-btn" type="button">Select document type</button>
+              <div id="kycDocTypePanel" class="custom-select-panel"></div>
+            </div>
+          </div>
+
+          <div>
+            <label class="label" for="kycDocId">Document ID Number <span class="req">*</span></label>
+            <input id="kycDocId" class="field kyc-field" type="text" placeholder="Official document number" />
+          </div>
+
+          <div>
+            <label class="label">Document Photo <span class="req">*</span></label>
+            <div id="kycDrop" class="kyc-drop kyc-field flex h-full cursor-pointer flex-col items-center justify-center rounded-[26px] border-2 border-dashed border-white/14 bg-white/5 px-6 py-10 text-center transition hover:border-[#dfff72]/70 hover:bg-[#dfff72]/5">
+              <input id="kycFile" class="hidden" type="file" accept="image/jpeg,image/png,image/webp" />
+              <div class="mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-white/8 text-3xl">📄</div>
+              <p id="kycFileName" class="text-base font-black text-pftText">Click to upload or drag and drop</p>
+              <p class="mt-2 text-sm font-semibold text-pftMuted">Accepted: JPG, PNG, WEBP. Max 1MB.</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="label">Live Selfie Photo <span class="req">*</span></label>
+            <div id="kycLiveBox" class="kyc-live kyc-field rounded-[26px] px-5 py-5 text-center">
+              <video id="kycLiveVideo" class="live-preview hidden" autoplay playsinline muted></video>
+              <canvas id="kycLiveCanvas" class="hidden"></canvas>
+              <img id="kycLivePreview" class="live-preview hidden" alt="Captured live KYC selfie" />
+              <div id="kycLivePlaceholder" class="flex min-h-[210px] flex-col items-center justify-center rounded-[22px] border border-dashed border-white/12 bg-black/10 px-4">
+                <div class="mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-white/8 text-3xl">📸</div>
+                <p class="text-base font-black text-pftText">Take a live photo</p>
+                <p class="mt-2 text-sm font-semibold text-pftMuted">Use the camera to capture a fresh selfie for KYC.</p>
+              </div>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <button id="kycStartCameraBtn" type="button" class="btn btn-ghost kyc-camera-control text-sm">Open Camera</button>
+                <button id="kycCaptureBtn" type="button" class="btn btn-primary kyc-camera-control hidden text-sm">Take Photo</button>
+                <button id="kycRetakeBtn" type="button" class="btn btn-ghost kyc-camera-control hidden text-sm">Retake</button>
+              </div>
+              <p id="kycLiveStatus" class="mt-3 text-xs font-bold text-pftMuted">Camera permission is requested only when you press Open Camera.</p>
+            </div>
+          </div>
+
+          <div class="flex justify-end md:col-span-2">
+            <button id="kycSubmitBtn" type="submit" class="btn btn-primary min-w-[220px]">Submit for Verification</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut,
+      EmailAuthProvider,
+      reauthenticateWithCredential,
+      updatePassword,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjnsV8YyZkblSIKRWWrsIGN_cin7pjVvs",
+      authDomain: "premium-funding-trade.firebaseapp.com",
+      projectId: "premium-funding-trade",
+      storageBucket: "premium-funding-trade.firebasestorage.app",
+      messagingSenderId: "369374602226",
+      appId: "1:369374602226:web:8dfdca506647198ffd016b",
+      measurementId: "G-5C59G92BKP"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    let currentUser = null;
+    let userRef = null;
+    let userData = {};
+    let selectedKycFile = null;
+    let selectedKycLivePhoto = "";
+    let kycCameraStream = null;
+
+    const countries = [
+      "Iraq","Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria","Azerbaijan",
+      "Bahrain","Belgium","Brazil","Canada","China","Denmark","Egypt","France","Germany","Greece","India","Indonesia",
+      "Ireland","Italy","Japan","Jordan","Kuwait","Lebanon","Malaysia","Mexico","Morocco","Netherlands","New Zealand",
+      "Norway","Oman","Palestine","Philippines","Poland","Portugal","Qatar","Romania","Saudi Arabia","Singapore",
+      "South Africa","South Korea","Spain","Sweden","Switzerland","Thailand","Tunisia","Turkey","United Arab Emirates",
+      "United Kingdom","United States","Vietnam","Yemen"
+    ];
+
+    const genders = ["Male", "Female", "Prefer not to say"];
+    const kycDocumentTypes = ["Passport", "National ID", "Driving License"];
+
+    function setupCustomSelect(fieldId, items, placeholder) {
+      const hidden = $(fieldId);
+      const root = document.querySelector(`[data-custom-select="${fieldId}"]`);
+      const button = $(`${fieldId}Btn`);
+      const panel = $(`${fieldId}Panel`);
+      if (!hidden || !root || !button || !panel) return;
+
+      function renderOptions() {
+        panel.innerHTML = "";
+
+        const placeholderButton = document.createElement("button");
+        placeholderButton.type = "button";
+        placeholderButton.className = "custom-option";
+        placeholderButton.textContent = placeholder;
+        placeholderButton.addEventListener("click", () => setValue(""));
+        panel.appendChild(placeholderButton);
+
+        items.forEach((item) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "custom-option";
+          option.textContent = item;
+          option.dataset.value = item;
+          option.addEventListener("click", () => setValue(item));
+          panel.appendChild(option);
+        });
+      }
+
+      function setValue(value) {
+        hidden.value = value;
+        button.textContent = value || placeholder;
+
+        panel.querySelectorAll(".custom-option").forEach((option) => {
+          option.classList.toggle("active", option.dataset.value === value);
+        });
+
+        root.classList.remove("open");
+      }
+
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (button.disabled) return;
+
+        document.querySelectorAll(".custom-select.open").forEach((select) => {
+          if (select !== root) select.classList.remove("open");
+        });
+
+        root.classList.toggle("open");
+      });
+
+      renderOptions();
+
+      // Expose a small controller for loading and locking.
+      root.customSelect = {
+        setValue,
+        setDisabled(disabled) {
+          button.disabled = disabled;
+          root.classList.toggle("disabled", disabled);
+        }
+      };
+    }
+
+    function setCustomSelectValue(fieldId, value) {
+      const root = document.querySelector(`[data-custom-select="${fieldId}"]`);
+      if (root?.customSelect) root.customSelect.setValue(value || "");
+      else if ($(fieldId)) $(fieldId).value = value || "";
+    }
+
+    function setCustomSelectDisabled(fieldId, disabled) {
+      const root = document.querySelector(`[data-custom-select="${fieldId}"]`);
+      if (root?.customSelect) root.customSelect.setDisabled(disabled);
+    }
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".custom-select.open").forEach((select) => select.classList.remove("open"));
+    });
+
+    function fillCountries() {
+      setupCustomSelect("gender", genders, "Select gender");
+      setupCustomSelect("country", countries, "Select country");
+      setupCustomSelect("kycDocType", kycDocumentTypes, "Select document type");
+    }
+
+    function showStatus(message, type = "success") {
+      const box = $("globalStatus");
+      box.textContent = message;
+      box.className = "status-box show mb-5 rounded-2xl border px-4 py-3 text-sm font-bold";
+      if (type === "error") {
+        box.classList.add("border-red-400/30", "bg-red-500/10", "text-red-100");
+      } else {
+        box.classList.add("border-green-400/30", "bg-green-500/10", "text-green-100");
+      }
+      setTimeout(() => box.classList.remove("show"), 5200);
+    }
+
+    function setButtonLoading(button, loading, loadingText, normalText) {
+      if (!button) return;
+      button.disabled = loading;
+      button.textContent = loading ? loadingText : normalText;
+      button.classList.toggle("opacity-60", loading);
+      button.classList.toggle("cursor-wait", loading);
+    }
+
+    function convertImageToDataUrl(file, maxSize = 360, quality = 0.86) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            const side = Math.min(img.width, img.height);
+            const sx = Math.max(0, (img.width - side) / 2);
+            const sy = Math.max(0, (img.height - side) / 2);
+            const canvas = document.createElement("canvas");
+            canvas.width = maxSize;
+            canvas.height = maxSize;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, sx, sy, side, side, 0, 0, maxSize, maxSize);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.onerror = reject;
+          img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function splitName(displayName = "") {
+      const parts = displayName.trim().split(/\s+/).filter(Boolean);
+      return {
+        firstName: parts[0] || "",
+        lastName: parts.slice(1).join(" ") || ""
+      };
+    }
+
+    function getFullName() {
+      const first = userData.firstName || splitName(userData.displayName || currentUser?.displayName || "").firstName;
+      const last = userData.lastName || splitName(userData.displayName || currentUser?.displayName || "").lastName;
+      return [first, last].filter(Boolean).join(" ") || currentUser?.displayName || "Premium Trader";
+    }
+
+    function setAvatar() {
+      const name = getFullName();
+      const letter = (name || currentUser?.email || "P").trim()[0].toUpperCase();
+      $("avatarFallback").textContent = letter;
+      const savedPhoto = userData.avatarImageStr || userData.photoURL || currentUser?.photoURL || "";
+      if (savedPhoto) {
+        $("avatarImg").src = savedPhoto;
+        $("avatarImg").classList.remove("hidden");
+        $("avatarFallback").classList.add("hidden");
+      } else {
+        $("avatarImg").removeAttribute("src");
+        $("avatarImg").classList.add("hidden");
+        $("avatarFallback").classList.remove("hidden");
+      }
+    }
+
+    function areNameFieldsLocked() {
+      return Boolean(userData.nameLockedAt || (userData.firstName && userData.lastName));
+    }
+
+    function lockIndividualIdentityFields() {
+      // First Name and Last Name lock immediately after they have been written the first time.
+      // This includes names saved during sign-up.
+      const namesLocked = areNameFieldsLocked();
+      ["firstName", "lastName"].forEach((id) => {
+        $(id).disabled = namesLocked;
+        $(id).readOnly = namesLocked;
+        $(id).title = namesLocked
+          ? "This name was already written once and cannot be changed again."
+          : "Check spelling carefully. After the first save, this name will be locked.";
+      });
+
+      const warning = $("nameOnceWarning");
+      if (warning && namesLocked) {
+        warning.textContent = "✅ Your first name and last name are locked because they were already written once. Phone, gender, country, password, KYC and profile photo can still be updated.";
+        warning.style.borderColor = "rgba(105,216,108,.24)";
+        warning.style.background = "linear-gradient(180deg,rgba(105,216,108,.12),rgba(105,216,108,.055))";
+        warning.style.color = "#d8ffd9";
+      } else if (warning) {
+        warning.textContent = "⚠️ Important: first name and last name can be written only once. After your first save, both fields will be locked permanently for this account. Check spelling carefully before pressing Save Changes.";
+        warning.style.borderColor = "rgba(250,204,21,.24)";
+        warning.style.background = "linear-gradient(180deg,rgba(250,204,21,.12),rgba(250,204,21,.055))";
+        warning.style.color = "#fff6c2";
+      }
+
+      // Keep Gender and Country editable.
+      setCustomSelectDisabled("gender", false);
+      setCustomSelectDisabled("country", false);
+      $("gender").disabled = false;
+      $("country").disabled = false;
+    }
+
+    function populateAccountFields() {
+      const fallback = splitName(userData.displayName || currentUser?.displayName || "");
+
+      $("firstName").value = userData.firstName || fallback.firstName || "";
+      $("lastName").value = userData.lastName || fallback.lastName || "";
+      $("profileEmail").value = currentUser.email || userData.email || "";
+      $("phoneNumber").value = userData.phone || userData.phoneNumber || "";
+      setCustomSelectValue("gender", userData.gender || "");
+      setCustomSelectValue("country", userData.country || "");
+
+      $("profileName").textContent = getFullName();
+      $("profileEmailText").textContent = currentUser.email || userData.email || "";
+      $("profileSubtitle").textContent = `Signed in as ${currentUser.email || userData.email || "Premium Trader"}`;
+
+      setAvatar();
+      lockIndividualIdentityFields();
+    }
+
+    async function loadProfile() {
+      const snapshot = await getDoc(userRef);
+      userData = snapshot.exists() ? snapshot.data() : {};
+
+      if (!snapshot.exists()) {
+        await setDoc(userRef, {
+          uid: currentUser.uid,
+          email: currentUser.email || "",
+          displayName: currentUser.displayName || "",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      }
+
+      populateAccountFields();
+      loadKycFields();
+    }
+
+    function requireSignedIn(user) {
+      if (!user) {
+        window.location.href = "signin.html";
+        return false;
+      }
+      return true;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!requireSignedIn(user)) return;
+
+      currentUser = user;
+      userRef = doc(db, "users", user.uid);
+      $("logoutBtn").classList.remove("hidden");
+      try { localStorage.setItem("pftLoggedIn", "1"); } catch (e) {}
+
+      try {
+        await loadProfile();
+      } catch (error) {
+        console.error(error);
+        if (error.code === "permission-denied") {
+          showStatus("Could not load profile because Firestore Rules are blocking users/{uid}. Apply the included rules snippet in Firebase Console.", "error");
+        } else {
+          showStatus(error.message || "Could not load your profile.", "error");
+        }
+      }
+    });
+
+    $("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      try { localStorage.removeItem("pftLoggedIn"); } catch (e) {}
+      window.location.href = "signin.html";
+    });
+
+    // Tabs
+    $$("[data-profile-tab]").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.profileTab;
+
+        $$("[data-profile-tab]").forEach((item) => item.classList.remove("tab-active"));
+        tab.classList.add("tab-active");
+
+        $$("[data-profile-section]").forEach((section) => {
+          section.classList.toggle("hidden", section.id !== `profile-section-${target}`);
+        });
+      });
+    });
+
+    $("avatarChangeBtn").addEventListener("click", () => $("avatarFile").click());
+
+    $("avatarFile").addEventListener("change", async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file || !currentUser || !userRef) return;
+      const allowed = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowed.includes(file.type)) {
+        showStatus("Profile photo must be JPG, PNG, or WEBP.", "error");
+        event.target.value = "";
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        showStatus("Profile photo is too large. Please upload an image under 2MB.", "error");
+        event.target.value = "";
+        return;
+      }
+      try {
+        showStatus("Uploading profile photo...");
+        const avatarImageStr = await convertImageToDataUrl(file);
+        await setDoc(userRef, {
+          avatarImageStr,
+          photoUpdatedAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        try { await updateProfile(currentUser, { photoURL: avatarImageStr }); } catch (e) { console.warn("Auth photoURL update skipped:", e); }
+        userData = { ...(userData || {}), avatarImageStr };
+        setAvatar();
+        showStatus("Profile photo updated successfully.");
+      } catch (error) {
+        console.error(error);
+        showStatus("Could not update profile photo. Please try a smaller image.", "error");
+      } finally {
+        event.target.value = "";
+      }
+    });
+
+    // Account save with individual edit-once protection.
+    $("accountForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!currentUser) return;
+
+      const payload = {
+        uid: currentUser.uid,
+        email: currentUser.email || "",
+        phone: $("phoneNumber").value.trim(),
+        gender: $("gender").value,
+        country: $("country").value,
+        updatedAt: serverTimestamp()
+      };
+
+      // First Name and Last Name can only be written once.
+      // Once either sign-up or profile save writes them, both fields lock permanently.
+      const firstNameInput = $("firstName").value.trim();
+      const lastNameInput = $("lastName").value.trim();
+      const namesLocked = areNameFieldsLocked();
+
+      if (!namesLocked) {
+        if (!firstNameInput) {
+          showStatus("First name is required before it is locked.", "error");
+          return;
+        }
+        if (!lastNameInput) {
+          showStatus("Last name is required before it is locked.", "error");
+          return;
+        }
+
+        const ok = window.confirm("Warning: this is the first and final time for writing your first name and last name. After saving, both fields will be locked permanently. Continue?");
+        if (!ok) return;
+
+        payload.firstName = firstNameInput;
+        payload.lastName = lastNameInput;
+        payload.fullName = `${firstNameInput} ${lastNameInput}`.trim();
+        payload.nameLockedAt = serverTimestamp();
+      }
+
+      try {
+        setButtonLoading($("saveAccountBtn"), true, "Saving...", "Save Changes");
+        await setDoc(userRef, payload, { merge: true });
+        if (payload.fullName) {
+          try { await updateProfile(currentUser, { displayName: payload.fullName }); } catch (e) { console.warn("Auth displayName update skipped:", e); }
+        }
+        await loadProfile();
+        showStatus(payload.fullName ? "Profile saved. Your first and last name are now locked." : "Profile saved successfully.");
+      } catch (error) {
+        console.error(error);
+        if (error.code === "permission-denied") {
+          showStatus("Firebase rejected the save. Update Firestore Rules to allow signed-in users to write their own users/{uid} document.", "error");
+        } else {
+          showStatus(error.message || "Could not save profile.", "error");
+        }
+      } finally {
+        setButtonLoading($("saveAccountBtn"), false, "Saving...", "Save Changes");
+      }
+    });
+
+    // Password eye toggles
+    $$(".eye-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const input = $(button.dataset.eye);
+        input.type = input.type === "password" ? "text" : "password";
+        button.textContent = input.type === "password" ? "Show" : "Hide";
+      });
+    });
+
+    $("passwordForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const currentPassword = $("currentPassword").value;
+      const newPassword = $("newPassword").value;
+      const confirmPassword = $("confirmPassword").value;
+
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        showStatus("Please fill all password fields.", "error");
+        return;
+      }
+      if (newPassword.length < 8) {
+        showStatus("New password must be at least 8 characters.", "error");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        showStatus("New passwords do not match.", "error");
+        return;
+      }
+
+      try {
+        setButtonLoading($("changePasswordBtn"), true, "Updating...", "Update Password");
+        const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
+        await reauthenticateWithCredential(currentUser, credential);
+        await updatePassword(currentUser, newPassword);
+        $("passwordForm").reset();
+        showStatus("Password updated successfully.");
+      } catch (error) {
+        console.error(error);
+        const message = error.code === "auth/invalid-credential" ? "Current password is incorrect." : "Could not update password.";
+        showStatus(message, "error");
+      } finally {
+        setButtonLoading($("changePasswordBtn"), false, "Updating...", "Update Password");
+      }
+    });
+
+    // KYC
+    function setKycBadge(status = "Not Submitted") {
+      const badge = $("kycStatus");
+      badge.textContent = status;
+      badge.className = "rounded-full px-4 py-2 text-xs font-black";
+
+      const styles = {
+        "Not Submitted": ["bg-gray-500/15", "text-gray-200"],
+        "Under Review": ["bg-yellow-400/15", "text-yellow-100"],
+        "Verified": ["bg-green-400/15", "text-green-100"],
+        "Rejected": ["bg-red-400/15", "text-red-100"]
+      };
+      badge.classList.add(...(styles[status] || styles["Not Submitted"]));
+    }
+
+    function setLivePhotoStatus(message, isError = false) {
+      const status = $("kycLiveStatus");
+      if (!status) return;
+      status.textContent = message;
+      status.classList.toggle("text-red-100", isError);
+      status.classList.toggle("text-pftMuted", !isError);
+    }
+
+    function stopKycCamera() {
+      if (kycCameraStream) {
+        kycCameraStream.getTracks().forEach((track) => track.stop());
+        kycCameraStream = null;
+      }
+      const video = $("kycLiveVideo");
+      if (video) video.srcObject = null;
+      $("kycCaptureBtn")?.classList.add("hidden");
+      $("kycStartCameraBtn")?.classList.toggle("hidden", Boolean(selectedKycLivePhoto));
+    }
+
+    function renderLivePhotoPreview(dataUrl = "") {
+      selectedKycLivePhoto = dataUrl || "";
+      const hasPhoto = Boolean(selectedKycLivePhoto);
+      const video = $("kycLiveVideo");
+      const preview = $("kycLivePreview");
+      const placeholder = $("kycLivePlaceholder");
+
+      stopKycCamera();
+      if (video) video.classList.add("hidden");
+      if (preview) {
+        preview.src = hasPhoto ? selectedKycLivePhoto : "";
+        preview.classList.toggle("hidden", !hasPhoto);
+      }
+      if (placeholder) placeholder.classList.toggle("hidden", hasPhoto);
+      $("kycStartCameraBtn")?.classList.toggle("hidden", hasPhoto);
+      $("kycRetakeBtn")?.classList.toggle("hidden", !hasPhoto);
+      setLivePhotoStatus(hasPhoto ? "Live selfie photo captured." : "Camera permission is requested only when you press Open Camera.");
+    }
+
+    async function startKycCamera() {
+      if (["Under Review", "Verified"].includes(userData.kycStatus || "Not Submitted")) return;
+      if (!navigator.mediaDevices?.getUserMedia) {
+        setLivePhotoStatus("Camera is not supported in this browser. Use a modern mobile or desktop browser over HTTPS.", true);
+        return;
+      }
+      try {
+        setLivePhotoStatus("Opening camera...");
+        selectedKycLivePhoto = "";
+        kycCameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+        const video = $("kycLiveVideo");
+        video.srcObject = kycCameraStream;
+        await video.play();
+        video.classList.remove("hidden");
+        $("kycLivePreview").classList.add("hidden");
+        $("kycLivePlaceholder").classList.add("hidden");
+        $("kycStartCameraBtn").classList.add("hidden");
+        $("kycRetakeBtn").classList.add("hidden");
+        $("kycCaptureBtn").classList.remove("hidden");
+        setLivePhotoStatus("Camera is ready. Press Take Photo.");
+      } catch (error) {
+        console.error(error);
+        setLivePhotoStatus("Could not open camera. Please allow camera permission and try again.", true);
+      }
+    }
+
+    function captureKycLivePhoto() {
+      const video = $("kycLiveVideo");
+      if (!video || !video.videoWidth) {
+        setLivePhotoStatus("Camera is not ready yet. Please wait a moment.", true);
+        return;
+      }
+      const canvas = $("kycLiveCanvas");
+      const size = 420;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      const side = Math.min(video.videoWidth, video.videoHeight);
+      const sx = (video.videoWidth - side) / 2;
+      const sy = (video.videoHeight - side) / 2;
+      ctx.drawImage(video, sx, sy, side, side, 0, 0, size, size);
+      renderLivePhotoPreview(canvas.toDataURL("image/jpeg", 0.86));
+    }
+
+    function lockKyc(locked) {
+      $$(".kyc-field").forEach((field) => {
+        field.disabled = locked;
+        field.classList.toggle("pointer-events-none", locked);
+        field.classList.toggle("opacity-60", locked);
+      });
+      $$(".kyc-camera-control").forEach((button) => {
+        button.disabled = locked;
+        button.classList.toggle("opacity-60", locked);
+        button.classList.toggle("cursor-not-allowed", locked);
+      });
+      if (locked) stopKycCamera();
+      setCustomSelectDisabled("kycDocType", locked);
+      $("kycSubmitBtn").disabled = locked;
+      $("kycSubmitBtn").classList.toggle("opacity-60", locked);
+      $("kycSubmitBtn").classList.toggle("cursor-not-allowed", locked);
+    }
+
+    function loadKycFields() {
+      const details = userData.kycDetails || {};
+      setCustomSelectValue("kycDocType", details.documentType || "");
+      $("kycDocId").value = details.documentId || "";
+      if (details.documentImageStr) $("kycFileName").textContent = "Document image saved";
+      renderLivePhotoPreview(details.livePhotoStr || "");
+      const status = userData.kycStatus || "Not Submitted";
+      setKycBadge(status);
+      lockKyc(["Under Review", "Verified"].includes(status));
+      if (status === "Rejected") $("kycSubmitBtn").textContent = "Re-submit Documents";
+    }
+
+    function convertFileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+      });
+    }
+
+    function selectKycFile(file) {
+      if (!file) return;
+      const allowed = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowed.includes(file.type)) {
+        showStatus("Upload JPG, PNG, or WEBP only.", "error");
+        return;
+      }
+      if (file.size > 1024 * 1024) {
+        showStatus("Image is too large. Please upload an image smaller than 1MB.", "error");
+        return;
+      }
+      selectedKycFile = file;
+      $("kycFileName").textContent = file.name;
+    }
+
+    $("kycDrop").addEventListener("click", () => {
+      if (!$("kycFile").disabled) $("kycFile").click();
+    });
+    $("kycFile").addEventListener("change", (event) => selectKycFile(event.target.files[0]));
+    $("kycDrop").addEventListener("dragover", (event) => {
+      event.preventDefault();
+      $("kycDrop").classList.add("drag");
+    });
+    $("kycDrop").addEventListener("dragleave", () => $("kycDrop").classList.remove("drag"));
+    $("kycDrop").addEventListener("drop", (event) => {
+      event.preventDefault();
+      $("kycDrop").classList.remove("drag");
+      selectKycFile(event.dataTransfer.files[0]);
+    });
+
+    $("kycStartCameraBtn").addEventListener("click", startKycCamera);
+    $("kycCaptureBtn").addEventListener("click", captureKycLivePhoto);
+    $("kycRetakeBtn").addEventListener("click", () => {
+      renderLivePhotoPreview("");
+      startKycCamera();
+    });
+    window.addEventListener("beforeunload", stopKycCamera);
+
+    $("kycForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const currentStatus = userData.kycStatus || "Not Submitted";
+      if (["Under Review", "Verified"].includes(currentStatus)) {
+        showStatus("Your KYC is already submitted.", "error");
+        return;
+      }
+
+      const documentType = $("kycDocType").value;
+      const documentId = $("kycDocId").value.trim();
+
+      if (!documentType || !documentId || !selectedKycFile || !selectedKycLivePhoto) {
+        showStatus("Please complete all KYC fields, upload a document image, and take a live selfie photo.", "error");
+        return;
+      }
+
+      try {
+        setButtonLoading($("kycSubmitBtn"), true, "Processing...", "Submit for Verification");
+        const base64 = await convertFileToBase64(selectedKycFile);
+
+        await setDoc(userRef, {
+          kycStatus: "Under Review",
+          kycDetails: {
+            documentType,
+            documentId,
+            documentImageStr: base64,
+            livePhotoStr: selectedKycLivePhoto,
+            livePhotoType: "image/jpeg",
+            fileName: selectedKycFile.name,
+            fileType: selectedKycFile.type,
+            fileSize: selectedKycFile.size,
+            submittedAt: serverTimestamp()
+          },
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        userData.kycStatus = "Under Review";
+        userData.kycDetails = { documentType, documentId, documentImageStr: base64, livePhotoStr: selectedKycLivePhoto };
+        setKycBadge("Under Review");
+        lockKyc(true);
+        $("kycFileName").textContent = "Document image saved";
+        showStatus("KYC submitted successfully and is now under review.");
+
+        /*
+          ADMIN NOTE:
+          In Firebase Console > Firestore > users > {userId},
+          manually change kycStatus to:
+          "Verified" or "Rejected".
+          The image is stored at:
+          users/{userId}.kycDetails.documentImageStr
+          users/{userId}.kycDetails.livePhotoStr
+        */
+      } catch (error) {
+        console.error(error);
+        showStatus("Could not submit KYC. The image may be too large for Firestore.", "error");
+        setButtonLoading($("kycSubmitBtn"), false, "Processing...", "Submit for Verification");
+      }
+    });
+
+    fillCountries();
+  </script>
+</body>
+</html>

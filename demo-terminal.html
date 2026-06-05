@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PFT Market Heatmap | Premium Funding Trade</title>
+  <meta name="description" content="Premium Funding Trade full-page market heatmap powered by TradingView." />
+  <meta name="theme-color" content="#08130b" />
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#07120a;
+      --text:#f0ebe5;
+      --muted:#c8d3c5;
+      --green:#58c958;
+      --lime:#dfff72;
+      --border:rgba(190,230,190,.16);
+      --shadow:0 24px 70px rgba(0,0,0,.38);
+      --nav-height:76px;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      width:100%;
+      min-height:100%;
+      margin:0;
+      overflow:hidden;
+    }
+
+    body{
+      font-family:Montserrat,Cairo,system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 14% 12%,rgba(88,201,88,.18),transparent 26%),
+        radial-gradient(circle at 86% 32%,rgba(223,255,114,.08),transparent 22%),
+        linear-gradient(180deg,#102115,#051008);
+    }
+
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+      background-size:72px 72px;
+      opacity:.10;
+      z-index:-1;
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    .topbar{
+      height:var(--nav-height);
+      position:relative;
+      z-index:50;
+      background:rgba(5,16,8,.84);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .nav{
+      width:min(1500px,calc(100% - 28px));
+      height:100%;
+      margin-inline:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brand img{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      object-fit:cover;
+      box-shadow:0 14px 40px rgba(88,201,88,.18);
+      flex:0 0 auto;
+    }
+
+    .brand strong{
+      display:block;
+      font-size:14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--lime);
+      white-space:nowrap;
+    }
+
+    .brand small{
+      display:block;
+      color:var(--muted);
+      font-weight:800;
+      font-size:11px;
+      margin-top:3px;
+      white-space:nowrap;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:0;
+      border-radius:999px;
+      padding:12px 17px;
+      font:inherit;
+      font-weight:900;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.2s ease;
+      white-space:nowrap;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .btn-primary{
+      background:linear-gradient(180deg,#69d86c,#43aa47);
+      color:#061008;
+      box-shadow:0 16px 38px rgba(88,201,88,.20);
+    }
+
+    .btn-ghost{
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.11);
+      color:var(--text);
+    }
+
+    .page{
+      width:100%;
+      height:calc(100vh - var(--nav-height));
+      padding:16px;
+    }
+
+    .heatmap-shell{
+      width:100%;
+      height:100%;
+      padding:16px;
+      border-radius:30px;
+      background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.028));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    .heatmap-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:2px 2px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      margin-bottom:14px;
+      flex:0 0 auto;
+    }
+
+    .heatmap-title h1{
+      margin:0;
+      font-size:clamp(22px,2vw,32px);
+      letter-spacing:-.035em;
+      line-height:1.1;
+    }
+
+    .heatmap-title p{
+      margin:7px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+      line-height:1.4;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(105,216,108,.25);
+      background:rgba(105,216,108,.10);
+      color:#9ff0a2;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .heatmap-widget-card{
+      position:relative;
+      flex:1 1 auto;
+      min-height:0;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid rgba(190,230,190,.13);
+      background:
+        radial-gradient(circle at 50% 0%,rgba(105,216,108,.06),transparent 36%),
+        #0b120d;
+    }
+
+    .tradingview-widget-container{
+      width:100%;
+      height:100%;
+      min-height:100%;
+      overflow:hidden;
+    }
+
+    .tradingview-widget-container__widget{
+      width:100%;
+      height:calc(100% - 32px);
+      min-height:calc(100% - 32px);
+    }
+
+    .tradingview-widget-container iframe{
+      width:100%!important;
+      height:100%!important;
+      min-height:100%!important;
+    }
+
+    .tradingview-widget-copyright{
+      height:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(5,16,8,.72);
+      border-top:1px solid rgba(255,255,255,.06);
+      font-size:12px;
+      color:var(--muted);
+      flex:0 0 auto;
+    }
+
+    .tradingview-widget-copyright a{
+      color:#9ff0a2;
+      font-weight:900;
+    }
+
+    @media(max-width:900px){
+      :root{--nav-height:70px}
+      .desktop-only{display:none}
+      .page{padding:10px}
+      .heatmap-shell{padding:10px;border-radius:22px}
+      .heatmap-header{align-items:flex-start}
+      .brand strong{font-size:11px}
+      .brand small{font-size:10px}
+      .brand img{width:42px;height:42px}
+    }
+
+    @media(max-width:620px){
+      .heatmap-title p{display:none}
+      .pill{font-size:10px;padding:7px 10px}
+      .nav{width:min(100% - 18px,1500px)}
+      .btn{padding:10px 13px;font-size:12px}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="nav">
+      <a class="brand" href="index.html">
+        <img src="pft-header-logo.png" alt="PFT logo" />
+        <span>
+          <strong>Premium Funding Trade</strong>
+          <small>Full Page Market Heatmap</small>
+        </span>
+      </a>
+
+      <div class="nav-actions">
+        <a class="btn btn-ghost desktop-only" href="index.html">Back to Website</a>
+        <a class="btn btn-primary" href="markets.html">Live Markets</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="heatmap-shell">
+      <div class="heatmap-header">
+        <div class="heatmap-title">
+          <h1>Market Heatmap</h1>
+          <p>Real-time market data and percentage changes are displayed by TradingView inside a full-page PFT container.</p>
+        </div>
+        <span class="pill">Dark Theme</span>
+      </div>
+
+      <div class="heatmap-widget-card">
+        <!-- TradingView Stock Heatmap Widget BEGIN -->
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <div class="tradingview-widget-copyright">
+            <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+              Track all markets on TradingView
+            </a>
+          </div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+          {
+            "exchanges": [],
+            "dataSource": "SPX500",
+            "grouping": "sector",
+            "blockSize": "market_cap_basic",
+            "blockColor": "change",
+            "locale": "en",
+            "symbolUrl": "",
+            "colorTheme": "dark",
+            "hasTopBar": true,
+            "isDataSetEnabled": true,
+            "isZoomEnabled": true,
+            "hasSymbolTooltip": true,
+            "isMonoSize": false,
+            "width": "100%",
+            "height": "100%"
+          }
+          </script>
+        </div>
+        <!-- TradingView Stock Heatmap Widget END -->
+      </div>
+    </section>
+  </main>
+</body>
+</html>
